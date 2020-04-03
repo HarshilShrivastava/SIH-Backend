@@ -5,14 +5,16 @@ from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
 from .models import Recruit
 from rest_framework.authentication import TokenAuthentication
-
+from Organization.models import(
+    Jobs
+)
 from rest_framework.decorators import (
     api_view,
     permission_classes,
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RecruitSerializer
+from .serializers import RecruitSerializer,JobapplySerializer
 from rest_framework.views import APIView
 
 
@@ -78,3 +80,31 @@ class profile(APIView):
             context['data']=data
             return Response(context)
             
+      
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def applyforjob(request,id):
+    if request.method=="POST":
+        context={}
+        data={}
+        obj=Jobs.objects.get(pk=id)
+        U=request.user
+        Profil=get_object_or_404(Recruit,User=request.user )
+        serializer=JobapplySerializer(data=request.data)
+        if serializer.is_valid():
+            obj=serializer.save(Recruit=Profil,job=obj)
+            context['status']=200
+            context['sucess']=True
+            data=serializer.data
+            context['message']="Sucessfully applied"
+            context['data']=data
+            return Response(context)
+        else:
+            context['status']=400
+            context['sucess']=False
+            data=serializer.errors
+            context['message']="can't apply "
+            context['data']=data
+            return Response(context)
+

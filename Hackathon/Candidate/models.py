@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from Organization.models import (
+    Jobs
+)
 User = get_user_model()
 
 # Create your models here.
@@ -24,3 +27,10 @@ class MCQresult(models.Model):
     Skill2=models.CharField( max_length=50,null=True)
     Skill3=models.CharField( max_length=50,null=True)
     Skill4=models.CharField( max_length=50,null=True)    
+
+
+class JobenquiryC(models.Model):
+    Recruit=models.ForeignKey(Recruit , on_delete=models.CASCADE)
+    At=models.DateTimeField( auto_now_add=True)
+    proposal=models.TextField()
+    job=models.ForeignKey(Jobs,on_delete=models.CASCADE)

@@ -7,11 +7,12 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import viewsets
-from .models import Profile
+from .models import Profile,Jobenquiry
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.decorators import login_required 
+from Organization.models import Jobs
 from rest_framework.response import Response
-from .serializers import UniversitySerializer,ApplicationSerializer
+from .serializers import UniversitySerializer,JobenquirySerializer
 from rest_framework.decorators import (
     api_view,
     permission_classes,
@@ -100,11 +101,10 @@ def applyforjobUniversity(request,id):
         data={}
         obj=Jobs.objects.get(pk=id)
         U=request.user
-        print(request.user)
-        Profile=get_object_or_404(Profile,User=U)
-        serializer=ApplicationSerializer(data=request.data)
+        Profil=get_object_or_404(Profile,User=request.user )
+        serializer=JobenquirySerializer(data=request.data)
         if serializer.is_valid():
-            obj=serializer.save(by_university=Profile,apply_on=obj)
+            obj=serializer.save(University=Profil,job=obj)
             context['status']=200
             context['sucess']=True
             data=serializer.data
@@ -115,7 +115,7 @@ def applyforjobUniversity(request,id):
             context['status']=400
             context['sucess']=False
             data=serializer.errors
-            context['message']="can't apply applied"
+            context['message']="can't apply "
             context['data']=data
             return Response(context)
 

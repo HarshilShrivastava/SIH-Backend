@@ -2,9 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from quiz.models import Domain
-from Candidate.models import (
-    Recruit
-)
+
+
 # Create your models here.
 class Company(models.Model):
     User=models.OneToOneField(User, on_delete=models.CASCADE)
@@ -24,10 +23,4 @@ class Jobs(models.Model):
     Level=models.IntegerField()
     Minimum_experience=models.IntegerField()
     prefered_city=models.CharField( max_length=50)
-
-class Application(models.Model):
-    by_recruit=models.ForeignKey(Recruit, on_delete=models.CASCADE)
-    proposal_text=models.TextField()
-    at=models.DateTimeField(  auto_now_add=True)
-    job=models.ForeignKey(Jobs, on_delete=models.CASCADE)
     

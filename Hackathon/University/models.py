@@ -1,8 +1,11 @@
 from django.db import models
-from Organization.models import Jobs
 from django.contrib.auth import get_user_model
+from Organization.models import (
+    Jobs
+)
 User = get_user_model()
-# Create your models here.
+
+
 class Profile(models.Model):
     User=models.OneToOneField(User,  on_delete=models.CASCADE)
     Name=models.CharField( max_length=250)
@@ -15,9 +18,8 @@ class Profile(models.Model):
     Email=models.EmailField( max_length=254)
 
 
-class Application(models.Model):
-    by_university=models.ForeignKey(Profile, on_delete=models.CASCADE,related_name="university")
-    proposal_text=models.TextField()
-    at=models.DateTimeField(  auto_now_add=True)
-    apply_on=models.ForeignKey(Jobs, on_delete=models.CASCADE,related_name="job")
-    
+class Jobenquiry(models.Model):
+    University=models.ForeignKey(Profile , on_delete=models.CASCADE)
+    At=models.DateTimeField(  auto_now_add=True)
+    proposal=models.TextField()
+    job=models.ForeignKey(Jobs,on_delete=models.CASCADE)
