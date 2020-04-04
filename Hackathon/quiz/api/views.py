@@ -3,8 +3,9 @@ from quiz.models import(
      DomainQuestion,
      Question
 )
+from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.decorators import api_view,permission_classes
 from quiz.api.serializers import (
 QuestionSerializer,
 AnswerSerializer,
@@ -33,6 +34,8 @@ class DomainQuestiontListViewset(viewsets.ReadOnlyModelViewSet):
     queryset = DomainQuestion.objects.all()
     serializer_class = DomainQuestionSerializer
     http_method_names = ['get']
+    permission_classes = (AllowAny,)
+
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['Domain']
 
@@ -50,6 +53,7 @@ class DomainQuestiontListViewset(viewsets.ReadOnlyModelViewSet):
 
 
 @api_view( ['POST'])
+@permission_classes((AllowAny,))
 def putgeneralmarks(request):
     if request.method=="POST":
         serializer=GeneralMarksSerializer(data=request.data)
@@ -60,7 +64,7 @@ def putgeneralmarks(request):
 
 
 @api_view( ['POST'])
-
+@permission_classes((AllowAny,))
 def putdomainmarks(request):
     if request.method=="POST":
         serializer=DomainMarksSerializer(data=request.data)
