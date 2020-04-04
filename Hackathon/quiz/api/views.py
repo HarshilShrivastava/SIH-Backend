@@ -24,6 +24,8 @@ class QuestiontListViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     http_method_names = ['get']
+    permission_classes = (AllowAny,)
+
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())
