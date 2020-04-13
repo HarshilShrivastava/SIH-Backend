@@ -7,4 +7,16 @@ class companyserializer(serializers.ModelSerializer):
 class jobserializer(serializers.ModelSerializer):
     class Meta:
         model=Jobs
-        fields='__all__'
+        fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id']
+
+
+class jobReadserializer(serializers.ModelSerializer):
+    Name=serializers.SerializerMethodField('get_name')
+
+    class Meta:
+        model=Jobs
+        fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id','Name']
+
+    def get_name(self,info):
+        data=info.by.Name
+        return data

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Company,Jobs
-from rest_framework import generics
+from rest_framework import filters
+
 from rest_framework import status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from .serializers import companyserializer,jobserializer
+from .serializers import companyserializer,jobserializer,jobReadserializer
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from Candidate.models import (
@@ -21,6 +22,8 @@ from Candidate.models import (
 )
 
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import generics
+
 class Companyprofile(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = (TokenAuthentication,)
@@ -147,7 +150,7 @@ class jobviewset(viewsets.ModelViewSet):
 
 
 class RecommendedJobviewset(viewsets.ReadOnlyModelViewSet):
-    serializer_class = jobserializer
+    serializer_class = jobReadserializer
     queryset=Jobs.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['Level','fields']
@@ -167,77 +170,10 @@ class RecommendedJobviewset(viewsets.ReadOnlyModelViewSet):
         return Response(context)
 
 
-# class addRecruit(viewsets.ModelViewSet):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = Jobapply
-
-#     queryset=Application.objects.all()
-#     authentication_classes = (TokenAuthentication,)
-#     http_method_names=['get','post','put','delete']
-#     def create(self,request,*kwargs):
-#         user=self.request.user
-#         Recruiter=get_object_or_404(Recruit,User=user)
-#         serializer=Jobapply
-#         if serializer.is_valid():
-#             Application=serializer.save()
-
-        
-#         data={}
-#         context={}
-
-#         context['status']=Recruiter.id
-#         return Response(context)
-
-
-# @api_view(['POST', ])
-# @permission_classes((IsAuthenticated, ))
-# def applyforjob(request,id):
-#     if request.method=="POST":
-#         context={}
-#         data={}
-#         obj=Jobs.objects.get(pk=id)
-#         U=request.user
-#         print(request.user)
-#         Recruiter=get_object_or_404(Recruit,User=U)
-#         serializer=Jobapply(data=request.data)
-#         if serializer.is_valid():
-#             obj=serializer.save(job=obj,by_recruit=Recruiter)
-#             context['status']=200
-#             context['sucess']=True
-#             data=serializer.data
-#             context['message']="Sucessfully applied"
-#             context['data']=data
-
-#         else:
-#             context['status']=200
-#             context['sucess']=True
-#             data=serializer.errors
-#             context['message']="Sucessfully applied"
-#             context['data']=data
-#         return Response(context)
-
-
-
-
-
-
-# @api_view(['GET',])
-# @permission_classes((IsAuthenticated, ))
-# def get_job(request,id):
-#     if request.method=="GET":
-#         context={}
-#         data={}
-#         obj=Jobs.objects.get(pk=id)
-#         Applicat=Application.objects.filter(job=obj)
-#         serializer=jobapplication(Applicat,many=True)
-#         context['sucess']=True
-#         context['status']=200
-#         context['count']=Application.count()
-#         data=serializer.data
-#         context['data']=data
-#         return Response(context)
-
-        
-
-
+class AllJobViews(generics.ListCreateAPIView):
+    queryset=Jobs.objects.all()
+    serializer_class = jobReadserializer
+    search_fields = ['^job_title','by__Name']
+    filter_backends = (filters.SearchFilter,)
+    
 

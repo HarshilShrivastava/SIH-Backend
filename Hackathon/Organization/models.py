@@ -15,6 +15,7 @@ class Company(models.Model):
     Registration_no=models.CharField(max_length=50)
     website=models.URLField( max_length=200)
 
+
 class Jobs(models.Model):
     by=models.ForeignKey(Company,  on_delete=models.CASCADE)
     job_title=models.CharField( max_length=50)
