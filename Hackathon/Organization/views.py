@@ -59,8 +59,8 @@ class Companyprofile(APIView):
                 obj=get_object_or_404(Company,User=request.user)
             except:
                 context['sucess']=False
-                context['status']=200
-                context['message']="fill the form"
+                context['status']=404
+                context['message']="profile not created"
                 context['data']=data
                 return Response(context)
             
