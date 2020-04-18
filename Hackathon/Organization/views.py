@@ -175,5 +175,17 @@ class AllJobViews(generics.ListCreateAPIView):
     serializer_class = jobReadserializer
     search_fields = ['^job_title','by__Name']
     filter_backends = (filters.SearchFilter,)
+    def list(self,request,*args,**kwargs):
+        self.object_list=self.filter_queryset(self.get_queryset())
+        serializer=self.get_serializer(self.object_list,many=True)
+        context={}
+        data={}
+        context['sucess']=True
+        context['status']=200
+        context['response']="sucessfull"
+        context['count']=self.object_list.count()
+        data=serializer.data
+        context['data']=data
+        return Response(context)
     
 
