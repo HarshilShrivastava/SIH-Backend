@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import Company,Jobs
 from rest_framework import filters
-
+from Candidate.models import(
+    JobenquiryC
+)
 from rest_framework import status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -20,7 +22,9 @@ from rest_framework import viewsets
 from Candidate.models import (
     Recruit
 )
-
+from Candidate.serializers import(
+    ApplicationSerializer
+)
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics
 
@@ -187,5 +191,34 @@ class AllJobViews(generics.ListCreateAPIView):
         data=serializer.data
         context['data']=data
         return Response(context)
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated, ))    
+def list_of_application(request,id):
+    context={}
+    data={}
+    if request.user.Is_Organization==0:
+        context['sucess']=False
+        context['status']=400
+        context['message']="unsucessfull get"
+        context['data']=data
+        return Response(context)
     
+    obj=get_object_or_404(Jobs,pk=id)
+    if request.user == obj.by.User:
+        qs=JobenquiryC.objects.filter(job=obj)
+        context['sucess']=True
+        context['status']=200
+        context['message']="sucessfull get"
+        context['count']=qs.count()
+        serializer=ApplicationSerializer(qs,many=True)
+        data=serializer.data
+        context['data']=data
+        return Response(context)
+    else:
+        context['sucess']=False
+        context['status']=400
+        context['message']=" unauthorised acess"
+        context['data']=data
+        return Response(context)
 

@@ -108,3 +108,4 @@ def applyforjob(request,id):
             context['data']=data
             return Response(context)
 
+
