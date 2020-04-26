@@ -25,3 +25,17 @@ class ApplicationSerializer(serializers.ModelSerializer):
     def get_Recruit_address(self,info):
         data=info.Recruit.Address
         return data
+
+class ViewAppilicationSerializer(serializers.ModelSerializer):
+    job_name=serializers.SerializerMethodField('get_job_name')
+    job_company=serializers.SerializerMethodField('get_company_name')
+
+    class Meta:
+        model=JobenquiryC
+        fields=['At','proposal','job_name','job_company']
+    def get_job_name(self,info):
+        data=info.job.job_title
+        return data
+    def get_company_name(self,info):
+        data=info.job.by.Name
+        return data

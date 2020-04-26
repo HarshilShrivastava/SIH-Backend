@@ -1,9 +1,14 @@
 from django.shortcuts import render
-from .models import Recruit,Skill,MCQresult
+from Candidate.models import (
+    Recruit,
+    Skill,
+    MCQresult,
+    JobenquiryC,
+
+    )
 from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import render, get_object_or_404
-from .models import Recruit
 from rest_framework.authentication import TokenAuthentication
 from Organization.models import(
     Jobs
@@ -14,7 +19,7 @@ from rest_framework.decorators import (
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RecruitSerializer,JobapplySerializer
+from .serializers import RecruitSerializer,JobapplySerializer,ViewAppilicationSerializer
 from rest_framework.views import APIView
 
 
@@ -107,5 +112,30 @@ def applyforjob(request,id):
             context['message']="can't apply "
             context['data']=data
             return Response(context)
+
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated, ))
+def list_of_job(request):
+    context={}
+    data={}
+    if request.user.Is_Candidate==0:
+        context['status']=400
+        context['sucess']=False
+        context['message']="Unauthorised acess "
+        context['data']=data
+        return Response(context)
+    obj=get_object_or_404(Recruit,User=request.user)
+    qs=JobenquiryC.objects.filter(Recruit=obj)
+    serializer=ViewAppilicationSerializer(qs,many=True)
+    context['status']=200
+    context['sucess']=True
+    data=serializer.data
+    context['message']="Sucessfull get"
+    context['count']=qs.count()
+    context['data']=data
+    return Response(context)
+    
 
 
