@@ -6,7 +6,8 @@ from quiz.models import (
     GeneralMarks,
     DomainQuestion,
     DomainMarks,
-    DomainAnswer
+    DomainAnswer,
+    SubDomain
 
 )
 from import_export.admin import ImportExportModelAdmin
@@ -32,5 +33,9 @@ class PersonAdmin(ImportExportModelAdmin):
 class PersonAdmin(ImportExportModelAdmin):
     pass
 @admin.register(DomainAnswer)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(SubDomain)
 class PersonAdmin(ImportExportModelAdmin):
     pass

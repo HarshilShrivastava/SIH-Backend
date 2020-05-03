@@ -6,10 +6,17 @@ class Domain(models.Model):
     def __str__(self):
         return self.Name
     
-# Create your models here.
+class SubDomain(models.Model):
+    Name= models.CharField(max_length=255)
+    From = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.Name
+    
+
 class Question(models.Model):
     Question_text=models.CharField(max_length=100)
     Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="domain")
+    SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return self.Question_text
     def __unicode__(self):
@@ -19,6 +26,7 @@ class Question(models.Model):
 class Answer(models.Model):
     Question_related_to=models.ForeignKey(Question,on_delete=models.CASCADE,related_name="Question") 
     from_Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="from_domain",null=True,blank=True)
+    SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     Weightage=models.PositiveIntegerField() 
     Answer_text=models.CharField(max_length=255)
     def __str__(self):
@@ -34,6 +42,7 @@ class GeneralMarks(models.Model):
 class DomainQuestion(models.Model):
     Question_text=models.CharField(max_length=100)
     Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="domain_specific")
+    SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return self.Question_text
     
@@ -48,6 +57,7 @@ class DomainMarks(models.Model):
 class DomainAnswer(models.Model):
     Question_related_to=models.ForeignKey(DomainQuestion,on_delete=models.CASCADE,related_name="Question_domain") 
     from_Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="from_domain_in_specific")
+    SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     Weightage=models.PositiveIntegerField() 
     Answer_text=models.CharField(max_length=255)
     def __str__(self):
