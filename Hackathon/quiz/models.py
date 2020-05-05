@@ -14,7 +14,7 @@ class SubDomain(models.Model):
     
 
 class Question(models.Model):
-    Question_text=models.CharField(max_length=100)
+    Question_text=models.TextField(max_length=100)
     Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="domain")
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
@@ -28,7 +28,7 @@ class Answer(models.Model):
     from_Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="from_domain",null=True,blank=True)
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     Weightage=models.PositiveIntegerField() 
-    Answer_text=models.CharField(max_length=255)
+    Answer_text=models.TextField()
     def __str__(self):
         return self.Answer_text
     
@@ -40,7 +40,7 @@ class GeneralMarks(models.Model):
 
 
 class DomainQuestion(models.Model):
-    Question_text=models.CharField(max_length=100)
+    Question_text=models.TextField()
     Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="domain_specific")
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
@@ -59,6 +59,6 @@ class DomainAnswer(models.Model):
     from_Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="from_domain_in_specific")
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     Weightage=models.PositiveIntegerField() 
-    Answer_text=models.CharField(max_length=255)
+    Answer_text=models.TextField()
     def __str__(self):
         return self.Answer_text    
