@@ -17,9 +17,17 @@ from rest_framework.decorators import (
     api_view,
     permission_classes,
 )
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import (
+    MultiPartParser, 
+    FormParser)
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RecruitSerializer,JobapplySerializer,ViewAppilicationSerializer,RatinfSerializer
+from Candidate.serializers import( 
+    RecruitSerializer,
+    JobapplySerializer,
+    ViewAppilicationSerializer,
+    RatingMarketSerializer,
+    RatingTechSerializer,
+    )
 from rest_framework.views import APIView
 
 
@@ -140,7 +148,7 @@ def list_of_job(request):
 
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated, ))
-def put_rating(request):
+def put_ratingM(request):
     context={}
     data={}
     if request.user.Is_Candidate==0:
@@ -149,19 +157,56 @@ def put_rating(request):
         context['message']="Unauthorised acess "
         context['data']=data
         return Response(context)
-    serializer=RatinfSerializer(data=request.data)
+    serializer=RatingMarketSerializer(data=request.data)
     if serializer.is_valid():
         obj=get_object_or_404(Recruit,User=request.user)
-        X=serializer.data['Rating']
-        prev=obj.Rating
-        no=obj.No_of
+        X=serializer.data['MarketRating']
+        prev=obj.MarketRating
+        no=obj.AttemptMarket
+        #new_val=(no*prev+X)/no+1
+        new_val=no*prev
+        new_val=int(new_val)+int(X)
+        no=no+1
+        new_val=new_val/no
+        obj.MarketRating=new_val
+        obj.AttemptMarket=no
+        obj.save()
+        context['status']=200
+        context['sucess']=True
+        context['message']="Sucessfull applied marks"
+        context['data']=data
+        return Response(context)
+    else:
+        context['status']=204
+        context['sucess']=False
+        context['message']="didn't update marks "
+        context['data']=data
+        return Response(context)
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def put_ratingT(request):
+    context={}
+    data={}
+    if request.user.Is_Candidate==0:
+        context['status']=400
+        context['sucess']=False
+        context['message']="Unauthorised acess "
+        context['data']=data
+        return Response(context)
+    serializer=RatingTechSerializer(data=request.data)
+    if serializer.is_valid():
+        obj=get_object_or_404(Recruit,User=request.user)
+        X=serializer.data['TechRating']
+        prev=obj.TechRating
+        no=obj.AttemptTech
         #new_val=(no*prev+X)/no+1
         new_val=no*prev
         new_val=new_val+X
         no=no+1
         new_val=new_val/no
-        obj.Rating=new_val
-        obj.No_of=no
+        obj.TechRating=new_val
+        obj.AttemptTech=no
         obj.save()
         context['status']=200
         context['sucess']=True

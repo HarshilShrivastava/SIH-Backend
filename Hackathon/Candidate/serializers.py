@@ -3,11 +3,17 @@ from rest_framework import serializers
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume","Rating"]
-class RatinfSerializer(serializers.ModelSerializer):
+        fields=["Name","Address","Resume"]
+class RatingMarketSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
-        fields=["Rating"]
+        fields=["MarketRating"]
+
+class RatingTechSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Recruit
+        fields=["TechRating"]
+
 class JobapplySerializer(serializers.ModelSerializer):
     class Meta:
         model=JobenquiryC
@@ -19,7 +25,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
     Resume_obj=serializers.SerializerMethodField('get_Recruit_Resume')
     class Meta:
         model=JobenquiryC
-        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj']
+        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','Rating']
     def get_Recruit_name(self,info):
         data=info.Recruit.Name
         return data

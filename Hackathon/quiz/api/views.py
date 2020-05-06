@@ -76,3 +76,10 @@ def putdomainmarks(request):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@api_view( ['POST'])
+@permission_classes((AllowAny,))
+def Level3qa(request,id1,id2):
+    context={}
+    data={}
+    qs1="Dl"

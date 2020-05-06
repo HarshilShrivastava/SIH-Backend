@@ -12,11 +12,11 @@ class Recruit(models.Model):
     User=models.OneToOneField(User , on_delete=models.CASCADE)
     Name=models.CharField( max_length=50)
     Address=models.CharField( max_length=250)
-    Rating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True)
-    No_of=models.PositiveIntegerField(default=1)
-
+    TechRating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True,default=0)
+    MarketRating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True,default=0)
+    AttemptTech=models.PositiveIntegerField(default=0)
+    AttemptMarket=models.PositiveIntegerField(default=0)
     Resume=models.FileField( upload_to="media", max_length=100)
-
 
 class Skill(models.Model):
     fromRecruit=models.OneToOneField(Recruit, on_delete=models.CASCADE)
