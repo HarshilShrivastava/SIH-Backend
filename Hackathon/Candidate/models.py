@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator
+
 from Organization.models import (
     Jobs
 )
@@ -10,6 +12,8 @@ class Recruit(models.Model):
     User=models.OneToOneField(User , on_delete=models.CASCADE)
     Name=models.CharField( max_length=50)
     Address=models.CharField( max_length=250)
+    Rating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True)
+
     Resume=models.FileField( upload_to="media", max_length=100)
 
 

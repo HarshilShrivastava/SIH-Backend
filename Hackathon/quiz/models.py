@@ -14,7 +14,7 @@ class SubDomain(models.Model):
     
 
 class Question(models.Model):
-    Question_text=models.TextField(max_length=100)
+    Question_text=models.TextField()
     Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="domain")
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):

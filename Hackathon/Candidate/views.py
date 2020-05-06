@@ -19,7 +19,7 @@ from rest_framework.decorators import (
 )
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RecruitSerializer,JobapplySerializer,ViewAppilicationSerializer
+from .serializers import RecruitSerializer,JobapplySerializer,ViewAppilicationSerializer,RatinfSerializer
 from rest_framework.views import APIView
 
 
@@ -138,4 +138,32 @@ def list_of_job(request):
     return Response(context)
     
 
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def put_rating(request):
+    context={}
+    data={}
+    if request.user.Is_Candidate==0:
+        context['status']=400
+        context['sucess']=False
+        context['message']="Unauthorised acess "
+        context['data']=data
+        return Response(context)
+    serializer=RatinfSerializer(data=request.data)
+    if serializer.is_valid():
+        obj=get_object_or_404(Recruit,User=request.user)
+        obj.Rating=serializer.data['Rating']
+        obj.save()
+        data="sex"
+        context['status']=200
+        context['sucess']=True
+        context['message']="Sucessfull applied marks"
+        context['data']=data
+        return Response(context)
+    else:
+        context['status']=204
+        context['sucess']=False
+        context['message']="didn't update marks "
+        context['data']=data
+        return Response(context)
 

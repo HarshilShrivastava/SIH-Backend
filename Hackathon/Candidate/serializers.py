@@ -4,6 +4,10 @@ class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
         fields=["Name","Address","Resume"]
+class RatinfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Recruit
+        fields=["Rating"]
 class JobapplySerializer(serializers.ModelSerializer):
     class Meta:
         model=JobenquiryC
