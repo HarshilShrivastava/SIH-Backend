@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from Candidate.models import (
+    Recruit
+)
 
 class Domain(models.Model):
     Name=   models.CharField(max_length=255)
@@ -36,7 +39,7 @@ class GeneralMarks(models.Model):
     Technology=models.PositiveIntegerField(null=True)
     Marketing=models.PositiveIntegerField(null=True)  
     Total=models.PositiveIntegerField(null=True)
-    Name=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,related_name="from_domain",null=True,blank=True)
+    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate",null=True,blank=True)
 
 
 class DomainQuestion(models.Model):
@@ -49,9 +52,14 @@ class DomainQuestion(models.Model):
 
 class DomainMarks(models.Model):
     Total=models.PositiveIntegerField(null=True)
-    Domain_final=models.CharField(max_length=25)
-    Name_of_user=models.ForeignKey(get_user_model(),on_delete=models.CASCADE,related_name="for_final_marks",null=True,blank=True)
+    Domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate_profile")
 
+
+class SubDomainMarks(models.Model):
+    Total=models.PositiveIntegerField(null=True)
+    SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE)
+    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate profile")
 
 
 class DomainAnswer(models.Model):

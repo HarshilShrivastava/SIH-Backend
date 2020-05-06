@@ -1,8 +1,10 @@
 from quiz.models import(
      Answer,
      DomainQuestion,
-     Question
+     Question,
+     SubDomain
 )
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view,permission_classes
@@ -77,9 +79,20 @@ def putdomainmarks(request):
 
 
 
-@api_view( ['POST'])
+@api_view( ['GET'])
 @permission_classes((AllowAny,))
 def Level3qa(request,id1,id2):
     context={}
     data={}
-    qs1="Dl"
+    d1=get_object_or_404(SubDomain,pk=id1)
+    qs1=DomainQuestion.objects.filter(SubDomain=d1)
+    d2=get_object_or_404(SubDomain,pk=id2)
+    qs1=qs1 | DomainQuestion.objects.filter(SubDomain=d2)
+    context['sucess']=True
+    context['status']=200
+    context['message']='sucessfull get'
+    context['count']=qs1.count()
+    serializer=DomainQuestionSerializer(qs1,many=True)
+    data=serializer.data
+    context['data']=data
+    return Response(context)
