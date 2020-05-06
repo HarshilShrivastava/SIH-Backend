@@ -3,7 +3,7 @@ from rest_framework import serializers
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume"]
+        fields=["Name","Address","Resume","Rating"]
 class RatinfSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
