@@ -152,9 +152,17 @@ def put_rating(request):
     serializer=RatinfSerializer(data=request.data)
     if serializer.is_valid():
         obj=get_object_or_404(Recruit,User=request.user)
-        obj.Rating=serializer.data['Rating']
+        X=serializer.data['Rating']
+        prev=obj.Rating
+        no=obj.No_of
+        #new_val=(no*prev+X)/no+1
+        new_val=no*prev
+        new_val=new_val+X
+        no=no+1
+        new_val=new_val/no
+        obj.Rating=new_val
+        obj.No_of=no
         obj.save()
-        data="sex"
         context['status']=200
         context['sucess']=True
         context['message']="Sucessfull applied marks"

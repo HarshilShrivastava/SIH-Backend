@@ -13,6 +13,7 @@ class Recruit(models.Model):
     Name=models.CharField( max_length=50)
     Address=models.CharField( max_length=250)
     Rating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True)
+    No_of=models.PositiveIntegerField(default=1)
 
     Resume=models.FileField( upload_to="media", max_length=100)
 
