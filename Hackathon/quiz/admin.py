@@ -3,9 +3,7 @@ from quiz.models import (
     Domain,
     Question,
     Answer,
-    GeneralMarks,
     DomainQuestion,
-    DomainMarks,
     DomainAnswer,
     SubDomain
 
@@ -23,15 +21,11 @@ class PersonAdmin(ImportExportModelAdmin):
 @admin.register(Answer)
 class PersonAdmin(ImportExportModelAdmin):
     pass
-@admin.register(GeneralMarks)
-class PersonAdmin(ImportExportModelAdmin):
-    pass
+
 @admin.register(DomainQuestion)
 class PersonAdmin(ImportExportModelAdmin):
     pass
-@admin.register(DomainMarks)
-class PersonAdmin(ImportExportModelAdmin):
-    pass
+
 @admin.register(DomainAnswer)
 class PersonAdmin(ImportExportModelAdmin):
     pass

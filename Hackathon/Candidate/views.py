@@ -2,7 +2,6 @@ from django.shortcuts import render
 from Candidate.models import (
     Recruit,
     Skill,
-    MCQresult,
     JobenquiryC,
 
     )
@@ -27,6 +26,9 @@ from Candidate.serializers import(
     ViewAppilicationSerializer,
     RatingMarketSerializer,
     RatingTechSerializer,
+    GeneralMarkSerializer,
+    subDomainMarkSerializer,
+    DomainMarkSerializer,
     )
 from rest_framework.views import APIView
 
@@ -220,3 +222,85 @@ def put_ratingT(request):
         context['data']=data
         return Response(context)
 
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def put_generalmarks(request):
+    context={}
+    data={}
+    if request.user.Is_Candidate==0:
+        context['status']=400
+        context['sucess']=False
+        context['message']="Unauthorised acess "
+        context['data']=data
+        return Response(context)
+    serializer=GeneralMarkSerializer(data=request.data)
+    if serializer.is_valid():
+        obj=get_object_or_404(Recruit,User=request.user)
+        obj=serializer.save(Recruit1=obj)
+        context['status']=200
+        context['sucess']=True
+        context['message']="Sucessfull applied marks"
+        context['data']=data
+        return Response(context)
+    else:
+        context['status']=204
+        context['sucess']=False
+        context['message']="didn't update marks "
+        context['data']=data
+        return Response(context)
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def put_domainmarks(request):
+    context={}
+    data={}
+    if request.user.Is_Candidate==0:
+        context['status']=400
+        context['sucess']=False
+        context['message']="Unauthorised acess "
+        context['data']=data
+        return Response(context)
+    serializer=DomainMarkSerializer(data=request.data)
+    if serializer.is_valid():
+        obj=get_object_or_404(Recruit,User=request.user)
+        obj=serializer.save(Recruit2=obj)
+        context['status']=200
+        context['sucess']=True
+        context['message']="Sucessfull applied marks"
+        context['data']=data
+        return Response(context)
+    else:
+        context['status']=204
+        context['sucess']=False
+        context['message']="didn't update marks "
+        context['data']=data
+        return Response(context)
+
+
+subDomainMarkSerializer
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def put_sub_domainmarks(request):
+    context={}
+    data={}
+    if request.user.Is_Candidate==0:
+        context['status']=400
+        context['sucess']=False
+        context['message']="Unauthorised acess "
+        context['data']=data
+        return Response(context)
+    serializer=subDomainMarkSerializer(data=request.data)
+    if serializer.is_valid():
+        obj=get_object_or_404(Recruit,User=request.user)
+        obj=serializer.save(Recruit3=obj)
+        context['status']=200
+        context['sucess']=True
+        context['message']="Sucessfull applied marks"
+        context['data']=data
+        return Response(context)
+    else:
+        context['status']=204
+        context['sucess']=False
+        context['message']="didn't update marks "
+        context['data']=data
+        return Response(context)

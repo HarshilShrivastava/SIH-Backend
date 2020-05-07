@@ -1,4 +1,12 @@
-from .models import Recruit,MCQresult,Skill,JobenquiryC
+from .models import (
+    Recruit,
+    Skill,
+    JobenquiryC,
+    GeneralMark,
+    DomainMark,
+    SubDomainMark,
+    
+    )
 from rest_framework import serializers
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +45,7 @@ class ApplicationSerializer(serializers.ModelSerializer):
         return data
 
 class ViewAppilicationSerializer(serializers.ModelSerializer):
+
     job_name=serializers.SerializerMethodField('get_job_name')
     job_company=serializers.SerializerMethodField('get_company_name')
 
@@ -49,3 +58,19 @@ class ViewAppilicationSerializer(serializers.ModelSerializer):
     def get_company_name(self,info):
         data=info.job.by.Name
         return data
+
+class GeneralMarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=GeneralMark
+        fields=['Technology','Marketing','Total']
+
+
+class DomainMarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=DomainMark
+        fields=['Domain','Total']
+
+class subDomainMarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=SubDomainMark
+        fields=['SubDomain','Total']

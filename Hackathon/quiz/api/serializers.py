@@ -4,8 +4,6 @@ from quiz.models import(
      Question,
      DomainAnswer,
      DomainQuestion,
-     GeneralMarks,
-     DomainMarks
      )
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,14 +29,3 @@ class DomainQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model=DomainQuestion
         fields='__all__'
-
-
-class GeneralMarksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=GeneralMarks
-        fields='__all__'
-
-class DomainMarksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=DomainMarks
-        fields='__all__'        

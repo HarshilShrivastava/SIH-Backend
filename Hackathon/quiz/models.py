@@ -1,9 +1,5 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-from Candidate.models import (
-    Recruit
-)
-
+# from Candidate.models import Recruit
 class Domain(models.Model):
     Name=   models.CharField(max_length=255)
     def __str__(self):
@@ -35,12 +31,6 @@ class Answer(models.Model):
     def __str__(self):
         return self.Answer_text
     
-class GeneralMarks(models.Model):
-    Technology=models.PositiveIntegerField(null=True)
-    Marketing=models.PositiveIntegerField(null=True)  
-    Total=models.PositiveIntegerField(null=True)
-    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate",null=True,blank=True)
-
 
 class DomainQuestion(models.Model):
     Question_text=models.TextField()
@@ -50,16 +40,16 @@ class DomainQuestion(models.Model):
         return self.Question_text
     
 
-class DomainMarks(models.Model):
-    Total=models.PositiveIntegerField(null=True)
-    Domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
-    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate_profile")
+# class DomainMarks(models.Model):
+#     Total=models.PositiveIntegerField(null=True)
+#     Domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+#    # Recruit2=models.ForeignKey(cm.Recruit,on_delete=models.CASCADE,related_name="candidate_profile")
 
 
-class SubDomainMarks(models.Model):
-    Total=models.PositiveIntegerField(null=True)
-    SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE)
-    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate profile")
+# class SubDomainMarks(models.Model):
+#     Total=models.PositiveIntegerField(null=True)
+#     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE)
+#     #Recruit3=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate profile")
 
 
 class DomainAnswer(models.Model):
