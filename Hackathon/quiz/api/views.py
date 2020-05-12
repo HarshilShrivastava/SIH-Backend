@@ -12,9 +12,6 @@ from quiz.api.serializers import (
 QuestionSerializer,
 AnswerSerializer,
 DomainQuestionSerializer,
-
-
-
 )
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -27,7 +24,6 @@ class QuestiontListViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = QuestionSerializer
     http_method_names = ['get']
     permission_classes = (AllowAny,)
-
 
     def list(self, request, *args, **kwargs):
         self.object_list = self.filter_queryset(self.get_queryset())

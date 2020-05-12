@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from rest_framework.permissions import AllowAny
+
 from Candidate.models import (
     Recruit,
     Skill,
@@ -223,7 +225,7 @@ def put_ratingT(request):
         return Response(context)
 
 @api_view(['POST', ])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((AllowAny, ))
 def put_generalmarks(request):
     context={}
     data={}
@@ -250,7 +252,7 @@ def put_generalmarks(request):
         return Response(context)
 
 @api_view(['POST', ])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((AllowAny, ))
 def put_domainmarks(request):
     context={}
     data={}
@@ -277,9 +279,9 @@ def put_domainmarks(request):
         return Response(context)
 
 
-subDomainMarkSerializer
+# subDomainMarkSerializer
 @api_view(['POST', ])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((AllowAny, ))
 def put_sub_domainmarks(request):
     context={}
     data={}
