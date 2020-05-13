@@ -37,13 +37,13 @@ class GeneralMark(models.Model):
 class DomainMark(models.Model):
     Total=models.PositiveIntegerField(null=True)
     Domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
-    Recruit2=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate_profile")
+    Recruit2=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate_profile",null=True,blank=True)
 
 
 class SubDomainMark(models.Model):
     Total=models.PositiveIntegerField(null=True)
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE)
-    Recruit3=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate")
+    Recruit3=models.ForeignKey(Recruit,on_delete=models.CASCADE,related_name="candidate",null=True,blank=True)
 
 
 class JobenquiryC(models.Model):
