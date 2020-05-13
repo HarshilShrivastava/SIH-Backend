@@ -229,16 +229,10 @@ def put_ratingT(request):
 def put_generalmarks(request):
     context={}
     data={}
-    if request.user.Is_Candidate==0:
-        context['status']=400
-        context['sucess']=False
-        context['message']="Unauthorised acess "
-        context['data']=data
-        return Response(context)
+
     serializer=GeneralMarkSerializer(data=request.data)
     if serializer.is_valid():
-        obj=get_object_or_404(Recruit,User=request.user)
-        obj=serializer.save(Recruit1=obj)
+        obj=serializer.save()
         context['status']=200
         context['sucess']=True
         context['message']="Sucessfull applied marks"
@@ -264,8 +258,7 @@ def put_domainmarks(request):
         return Response(context)
     serializer=DomainMarkSerializer(data=request.data)
     if serializer.is_valid():
-        obj=get_object_or_404(Recruit,User=request.user)
-        obj=serializer.save(Recruit2=obj)
+        obj=serializer.save()
         context['status']=200
         context['sucess']=True
         context['message']="Sucessfull applied marks"
@@ -285,16 +278,10 @@ def put_domainmarks(request):
 def put_sub_domainmarks(request):
     context={}
     data={}
-    if request.user.Is_Candidate==0:
-        context['status']=400
-        context['sucess']=False
-        context['message']="Unauthorised acess "
-        context['data']=data
-        return Response(context)
+
     serializer=subDomainMarkSerializer(data=request.data)
     if serializer.is_valid():
-        obj=get_object_or_404(Recruit,User=request.user)
-        obj=serializer.save(Recruit3=obj)
+        obj=serializer.save()
         context['status']=200
         context['sucess']=True
         context['message']="Sucessfull applied marks"
