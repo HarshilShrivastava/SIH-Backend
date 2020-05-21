@@ -24,6 +24,7 @@ class PersonAdmin(ImportExportModelAdmin):
 
 @admin.register(DomainQuestion)
 class PersonAdmin(ImportExportModelAdmin):
+    list_filter = ('SubDomain', 'Level3')
     pass
 
 @admin.register(DomainAnswer)
