@@ -158,7 +158,6 @@ class RecommendedJobviewset(viewsets.ReadOnlyModelViewSet):
     queryset=Jobs.objects.all()
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['Level','fields']
-
     http_method_names=['get']
     def list(self, request,*kwargs):
         context={}

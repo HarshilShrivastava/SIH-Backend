@@ -36,6 +36,7 @@ class DomainQuestion(models.Model):
     Question_text=models.TextField()
     Domain=models.ForeignKey(Domain,on_delete=models.CASCADE,related_name="domain_specific")
     SubDomain = models.ForeignKey(SubDomain, on_delete=models.CASCADE,null=True,blank=True)
+    Level3=models.BooleanField()
     def __str__(self):
         return self.Question_text
     

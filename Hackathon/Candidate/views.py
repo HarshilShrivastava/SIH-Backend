@@ -282,7 +282,7 @@ def put_sub_domainmarks(request):
     serializer=subDomainMarkSerializer(data=request.data)
     if serializer.is_valid():
         obj=serializer.save()
-        context['status']=200
+        context['status']=200 
         context['sucess']=True
         context['message']="Sucessfull applied marks"
         context['data']=data

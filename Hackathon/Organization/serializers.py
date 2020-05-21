@@ -15,7 +15,7 @@ class jobReadserializer(serializers.ModelSerializer):
 
     class Meta:
         model=Jobs
-        fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id','Name']
+        fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id','Name','SubDomain']
 
     def get_name(self,info):
         data=info.by.Name

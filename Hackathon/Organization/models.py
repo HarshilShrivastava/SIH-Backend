@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from quiz.models import Domain
+from quiz.models import Domain,SubDomain
+
 
 
 # Create your models here.
@@ -24,4 +25,5 @@ class Jobs(models.Model):
     Level=models.IntegerField()
     Minimum_experience=models.IntegerField()
     prefered_city=models.CharField( max_length=50)
+    SubDomain=models.ManyToManyField(SubDomain)
     

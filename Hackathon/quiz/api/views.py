@@ -46,7 +46,9 @@ class DomainQuestiontListViewset(viewsets.ReadOnlyModelViewSet):
         context['status']=200
         context['response']="sucessfull"
         self.object_list = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(self.object_list, many=True)
+        a=self.object_list
+        b=a.filter(Level3=False)
+        serializer = self.get_serializer(b, many=True)
         data=serializer.data
         context['data']=data
         return Response(context)
@@ -59,9 +61,10 @@ def Level3qa(request,id1,id2):
     context={}
     data={}
     d1=get_object_or_404(SubDomain,pk=id1)
-    qs1=DomainQuestion.objects.filter(SubDomain=d1)
+    qs1=DomainQuestion.objects.filter(SubDomain=d1,Level3=True)
     d2=get_object_or_404(SubDomain,pk=id2)
-    qs1=qs1 | DomainQuestion.objects.filter(SubDomain=d2)
+    qs1=qs1 | DomainQuestion.objects.filter(SubDomain=d2,Level3=True)
+    # qs1=qs1 | qs1.objects.filter()
     context['sucess']=True
     context['status']=200
     context['message']='sucessfull get'
