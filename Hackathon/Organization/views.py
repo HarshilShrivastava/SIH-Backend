@@ -168,7 +168,7 @@ def Recommendedjobs(request):
             jobsqscount=jobsqs.count()
             first_ratio=0.4*jobsqscount
             Second_ratio=0.3*jobsqscount
-            third_ratio=0.1*jobsqscount
+            third_ratio=0.2*jobsqscount
             fourth_ratio=0.1*jobsqscount
             final=Jobs.objects.none().distinct()
             final=final|Jobs.objects.filter(SubDomain=first)[:first_ratio]
