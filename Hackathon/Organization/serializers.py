@@ -8,7 +8,12 @@ class jobserializer(serializers.ModelSerializer):
     class Meta:
         model=Jobs
         fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id']
-
+        
+class ResultSerializer(serializers.Serializer):
+    first = serializers.IntegerField()
+    Second = serializers.IntegerField()
+    third = serializers.IntegerField()
+    fourth = serializers.IntegerField()
 
 class jobReadserializer(serializers.ModelSerializer):
     Name=serializers.SerializerMethodField('get_name')

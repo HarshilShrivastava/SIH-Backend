@@ -8,6 +8,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, get_object_or_404
+from rest_framework.permissions import AllowAny
+
 from rest_framework.decorators import (
     api_view,
     permission_classes,
@@ -16,7 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from .serializers import companyserializer,jobserializer,jobReadserializer
+from .serializers import companyserializer,jobserializer,jobReadserializer,ResultSerializer
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from Candidate.models import (
@@ -152,25 +154,44 @@ class jobviewset(viewsets.ModelViewSet):
             return Response(context)
 
 
+@api_view(['POST', ])
+@permission_classes((AllowAny, ))   
+def Recommendedjobs(request):
+    if request.method=='POST':
+        serializer=ResultSerializer(data=request.data)
+        if serializer.is_valid():
+            first=serializer.data['first']
+            Second=serializer.data['Second']
+            third=serializer.data['third']
+            fourth=serializer.data['fourth']
+            jobsqs=Jobs.objects.filter(SubDomain=first).filter(SubDomain=Second).filter(SubDomain=third).filter(SubDomain=fourth)
+            jobsqscount=jobsqs.count()
+            first_ratio=0.4*jobsqscount
+            Second_ratio=0.3*jobsqscount
+            third_ratio=0.1*jobsqscount
+            fourth_ratio=0.1*jobsqscount
+            final=Jobs.objects.none().distinct()
+            final=final|Jobs.objects.filter(SubDomain=first)[:first_ratio]
+            final=final|Jobs.objects.filter(SubDomain=first)[:Second_ratio]
+            final=final|Jobs.objects.filter(SubDomain=first)[:third_ratio]
+            final=final|Jobs.objects.filter(SubDomain=first)[:fourth_ratio]
+            finalqs=jobReadserializer(final,many=True)
+            data={}
+            context={}
+            context['sucess']=True
+            context['status']=200
+            context['count']=jobsqscount
+            context['message']="sucessfull get"
+            data=finalqs.data
+            context['data']=data
+            return Response (context)
+        else:
+            context['sucess']=False
+            context['status']=401
+            context['message']=serializer.errors
+            context['data']=data
+            return Response (context)
 
-class RecommendedJobviewset(viewsets.ReadOnlyModelViewSet):
-    serializer_class = jobReadserializer
-    queryset=Jobs.objects.all()
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['Level','fields']
-    http_method_names=['get']
-    def list(self, request,*kwargs):
-        context={}
-        data={}
-        queryset=Jobs.objects.all()
-        context['sucess']=True
-        context['status']=200
-        context['response']="sucessfull"
-        self.object_list = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(self.object_list, many=True)
-        data=serializer.data
-        context['data']=data
-        return Response(context)
 
 
 class AllJobViews(generics.ListCreateAPIView):
