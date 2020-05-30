@@ -38,7 +38,7 @@ class DomainQuestiontListViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['Domain']
+    filterset_fields = ['Domain','SubDomain']
 
     def list(self, request, *args, **kwargs):
         context={}
@@ -52,7 +52,7 @@ class DomainQuestiontListViewset(viewsets.ReadOnlyModelViewSet):
         b=DomainQuestion.objects.none().distinct()
         SubDomainList=get_list_or_404(SubDomain,From=Domain_value)
         for item in SubDomainList:
-            b=b|a.filter(SubDomain=item)[:5]
+            b=b|a.filter(SubDomain=item.id)[:5]
         b=b.order_by('?')
         serializer = self.get_serializer(b, many=True)
         data=serializer.data
