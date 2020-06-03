@@ -5,9 +5,13 @@ from .models import (
     GeneralMark,
     DomainMark,
     SubDomainMark,
-    
+    FulllistMarks
     )
 from rest_framework import serializers
+class FulllistMarksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=FulllistMarks
+        exclude=['Recruit']
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit

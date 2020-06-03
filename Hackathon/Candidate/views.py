@@ -5,6 +5,7 @@ from Candidate.models import (
     Recruit,
     Skill,
     JobenquiryC,
+    FulllistMarks
 
     )
 from rest_framework import status
@@ -30,6 +31,7 @@ from Candidate.serializers import(
     RatingTechSerializer,
     GeneralMarkSerializer,
     subDomainMarkSerializer,
+    FulllistMarksSerializer,
     DomainMarkSerializer,
     )
 from rest_framework.views import APIView
@@ -293,3 +295,53 @@ def put_sub_domainmarks(request):
         context['message']="didn't update marks "
         context['data']=data
         return Response(context)
+
+class Fullmarks(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+    def post(self, request, *args, **kwargs):
+        context={}
+        data={}
+
+        if request.user.Is_Candidate == 1:
+            try:
+                obj=get_object_or_404(Recruit,User=request.user)
+            except:
+                context['sucess']=False
+                context['status']=400
+                context['data']=data
+                return Response(context)
+            serializer = FulllistMarksSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(Recruit=obj)
+                context['sucess']=True
+                context['status']=200
+                data=serializer.data
+                context['data']=data
+                return Response(context)
+            else:
+                context['sucess']=False
+                context['status']=400
+                data=serializer.errors
+                context['data']=data
+                return Response(context)
+
+    def get(self, request, *args, **kwargs):
+        context={}
+        data={}
+        if request.user.Is_Candidate == 1:
+            try:
+                obj=get_object_or_404(Recruit,User=request.user)
+            except:
+                context['sucess']=False
+                context['status']=400
+                context['data']=data
+                return Response(context)
+            qs=FulllistMarks.objects.filter(Recruit=obj)
+            serializer = FulllistMarksSerializer(qs,many=True)
+            context['sucess']=True
+            context['status']=200
+            context['count']=qs.count()
+            data=serializer.data
+            context['data']=data
+            return Response(context)

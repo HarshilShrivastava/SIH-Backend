@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator,MinValueValidator
 from quiz.models import(
     Domain,
     SubDomain
@@ -14,8 +14,8 @@ class Recruit(models.Model):
     User=models.OneToOneField(User , on_delete=models.CASCADE)
     Name=models.CharField( max_length=50)
     Address=models.CharField( max_length=250)
-    TechRating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True,default=0)
-    MarketRating = models.PositiveIntegerField( validators=[MaxValueValidator(10)],null=True,blank=True,default=0)
+    TechRating = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
+    MarketRating = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
     AttemptTech=models.PositiveIntegerField(null=True,blank=True,default=0)
     AttemptMarket=models.PositiveIntegerField(null=True,blank=True,default=0)
     Resume=models.FileField( upload_to="media", max_length=100)
@@ -51,3 +51,13 @@ class JobenquiryC(models.Model):
     At=models.DateTimeField( auto_now_add=True)
     proposal=models.TextField()
     job=models.ForeignKey(Jobs,on_delete=models.CASCADE)
+
+
+class FulllistMarks(models.Model):
+    Recruit=models.ForeignKey(Recruit , on_delete=models.CASCADE)
+    Roundone = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
+    RoundTwo1 = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
+    RoundTwo2 = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
+    RoundThree1 = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
+    RoundThree2 = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
+    TimeStamp=models.DateTimeField(auto_now_add=True)
