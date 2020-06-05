@@ -12,6 +12,12 @@ class FulllistMarksSerializer(serializers.ModelSerializer):
     class Meta:
         model=FulllistMarks
         exclude=['Recruit']
+class RecruitReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Recruit
+        fields=["Name","Address","Resume","MarketRating","TechRating"]
+
+
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit

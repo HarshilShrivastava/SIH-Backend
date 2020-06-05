@@ -33,6 +33,7 @@ from Candidate.serializers import(
     subDomainMarkSerializer,
     FulllistMarksSerializer,
     DomainMarkSerializer,
+    RecruitReadSerializer
     )
 from rest_framework.views import APIView
 
@@ -72,7 +73,7 @@ class profile(APIView):
                 context['status']=400
                 context['data']=data
                 return Response(context)
-            serializer = RecruitSerializer(obj)
+            serializer = RecruitReadSerializer(obj)
             context['sucess']=True
             context['status']=200
             data=serializer.data
