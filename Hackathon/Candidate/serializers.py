@@ -21,7 +21,9 @@ class RecruitReadSerializer(serializers.ModelSerializer):
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume"]
+        fields=["Name","Address","Resume",'Socialmedia',"Time","Familyincome","Residence"]
+
+        
 class RatingMarketSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit

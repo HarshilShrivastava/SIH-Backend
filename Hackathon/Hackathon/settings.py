@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "Candidate",
     'corsheaders',
     "quiz",
+    'content',
     'import_export',
     'django_filters',
     'image',

@@ -10,6 +10,27 @@ from Organization.models import (
 )
 User = get_user_model()
 
+
+class SocialMedia(models.Model):
+    name=models.CharField( max_length=50,null=True)
+    def __str__(self):
+        return self.name
+ 
+class SocialMediaTags(models.Model):
+    name=models.CharField( max_length=50)
+    def __str__(self):
+        return self.name
+
+class SocioeconomicTags(models.Model):
+    name=models.CharField( max_length=50)
+    def __str__(self):
+        return self.name
+
+class Residence(models.Model):
+    name=models.CharField(max_length=50)
+    def __str__(self):
+        return self.name
+
 class Recruit(models.Model):
     User=models.OneToOneField(User , on_delete=models.CASCADE)
     Name=models.CharField( max_length=50)
@@ -19,6 +40,16 @@ class Recruit(models.Model):
     AttemptTech=models.PositiveIntegerField(null=True,blank=True,default=0)
     AttemptMarket=models.PositiveIntegerField(null=True,blank=True,default=0)
     Resume=models.FileField( upload_to="media", max_length=100)
+    Socialmedia = models.ManyToManyField(SocialMedia, blank=True)
+    Time=models.FloatField(blank=True,null=True,default=0)
+    Familyincome=models.PositiveIntegerField(null=True,blank=True,default=0)
+    Residence=models.ForeignKey(Residence,on_delete=models.CASCADE,null=True)
+    SocialMediaTags=models.ManyToManyField(SocialMediaTags,blank=True)
+    SocioeconomicTags=models.ManyToManyField(SocioeconomicTags,blank=True)
+
+
+    
+
 
 class Skill(models.Model):
     fromRecruit=models.OneToOneField(Recruit, on_delete=models.CASCADE)
