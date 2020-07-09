@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from User.models import user
+from Candidate.models import Recruit
 
 class RegistrationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
@@ -32,3 +33,8 @@ class LoginSerializer(serializers.Serializer):
     password=serializers.CharField(max_length=20)
     class Meta:
         fields=['username','password']
+
+class ResumeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Recruit
+        fields=['Resume']

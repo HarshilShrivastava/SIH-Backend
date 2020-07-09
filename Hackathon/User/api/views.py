@@ -11,6 +11,8 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 # Create your views here.
 from django.core.mail import EmailMessage
+from django.shortcuts import get_list_or_404, get_object_or_404
+from Candidate.models import Recruit
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
@@ -20,7 +22,8 @@ from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny
 from .serializers import(
 RegistrationSerializer,
-LoginSerializer
+LoginSerializer,
+ResumeSerializer
 )
 def validate_email(email):
     user = None
@@ -105,6 +108,7 @@ def ObtainAuthTokenView(request):
                     token = Token.objects.create(user=account)
                 context['status']=200
                 context['token'] = token.key
+                context['id']=account.id
                 context['Is_Organization']=account.Is_Organization
                 context['Is_Candidate']=account.Is_Candidate
                 context['Is_University']=account.Is_University
@@ -114,3 +118,26 @@ def ObtainAuthTokenView(request):
                 context['error_message'] = 'Invalid credentials'
             
         return Response(context)
+
+
+
+@api_view(['GET',])
+@permission_classes((AllowAny,))
+def Resume(request,id):
+    context={}
+    data={}
+    user=get_object_or_404(User,pk=id)
+    if user.Is_Candidate==1:
+        Candidate=get_object_or_404(Recruit,User=user)
+        context['status']=200
+        context['message']="Found "
+        serializer=ResumeSerializer(Candidate)
+        data=serializer.data
+        context['data']=serializer.data
+        return Response(context)
+    else:
+        context['status']=400
+        context['message']="Not Found "
+        return Response(context)
+
+        

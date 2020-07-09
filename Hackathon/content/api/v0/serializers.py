@@ -1,16 +1,23 @@
 from rest_framework import serializers
 from content.models import(
     Blogs,
-    Courses
+    Courses,
+    Scheme
 )
 
 class BlogsSerializers(serializers.ModelSerializer):
     class Meta:
         model=Blogs
-        fields=["Title","Description","photo","Refrences","Apply"]
+        fields="__all__"
 
 
 class CourseSerializers(serializers.ModelSerializer):
     class Meta:
         model=Courses
-        fields=["Title","Description","By","photo","Refrences","Apply"]
+        fields="__all__"
+
+
+class SchemeSerializers(serializers.ModelSerializer):
+    class Meta:
+        model=Scheme
+        fields="__all__"

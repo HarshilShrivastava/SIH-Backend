@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'storages',
     "Candidate",
     'corsheaders',
     "quiz",
@@ -129,9 +130,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 CORS_ORIGIN_ALLOW_ALL=True
 AUTH_USER_MODEL = 'User.user'
 
@@ -140,8 +138,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'manishr4040@gmail.com'
 EMAIL_HOST_PASSWORD = '17070124040'
 EMAIL_PORT = 587
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = '/media/'
 REST_FRAMEWORK = {    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
@@ -150,3 +146,21 @@ REST_FRAMEWORK = {    'DEFAULT_AUTHENTICATION_CLASSES': [
     ],
 }
     
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'Hackathon.storage_backends.MediaStorage'  # <-- here is where we reference it
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID='AKIARROVP2ESHFIXFWF7'
+AWS_SECRET_ACCESS_KEY='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'
+AWS_STORAGE_BUCKET_NAME = 'sih-backend'
+AWS_LOCATION='static'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+CORS_ORIGIN_ALLOW_ALL=True
+AWS_S3_FILE_OVERWRITE=False
+AWS_DEFAULT_ACL = None
+IMPORT_EXPORT_USE_TRANSACTIONS = True
