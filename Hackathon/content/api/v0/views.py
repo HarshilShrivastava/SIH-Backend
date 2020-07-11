@@ -5,6 +5,8 @@ from content.models import(
     Courses,
     Scheme
 )
+from rest_framework import filters
+
 from Candidate.models import Recruit
 from rest_framework import status
 from rest_framework.response import Response
@@ -22,6 +24,7 @@ from content.api.v0.serializers import(
     SchemeSerializers
     )
 from rest_framework.views import APIView
+from rest_framework import generics
 
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated, ))
@@ -84,3 +87,60 @@ def RecommendedScheme(request):
     context['count']=qs.count()
     context['data']=data
     return Response(context)
+
+
+
+class AllBlogsViews(generics.ListCreateAPIView):
+    queryset=Blogs.objects.all()
+    serializer_class = BlogsSerializers
+    search_fields = ['^Title','^Description']
+    filter_backends = (filters.SearchFilter,)
+    def list(self,request,*args,**kwargs):
+        self.object_list=self.filter_queryset(self.get_queryset())
+        serializer=self.get_serializer(self.object_list,many=True)
+        context={}
+        data={}
+        context['sucess']=True
+        context['status']=200   
+        context['response']="sucessfull"
+        context['count']=self.object_list.count()
+        data=serializer.data
+        context['data']=data
+        return Response(context)
+        
+class AllSchemeViews(generics.ListCreateAPIView):
+    queryset=Scheme.objects.all()
+    serializer_class = SchemeSerializers
+    search_fields = ['^Title','^Description','^By']
+    filter_backends = (filters.SearchFilter,)
+    def list(self,request,*args,**kwargs):
+        self.object_list=self.filter_queryset(self.get_queryset())
+        serializer=self.get_serializer(self.object_list,many=True)
+        context={}
+        data={}
+        context['sucess']=True
+        context['status']=200   
+        context['response']="sucessfull"
+        context['count']=self.object_list.count()
+        data=serializer.data
+        context['data']=data
+        return Response(context)
+        
+    
+class CoursesViews(generics.ListCreateAPIView):
+    queryset=Courses.objects.all()
+    serializer_class = CourseSerializers
+    search_fields = ['^Title','^Description','^By']
+    filter_backends = (filters.SearchFilter,)
+    def list(self,request,*args,**kwargs):
+        self.object_list=self.filter_queryset(self.get_queryset())
+        serializer=self.get_serializer(self.object_list,many=True)
+        context={}
+        data={}
+        context['sucess']=True
+        context['status']=200   
+        context['response']="sucessfull"
+        context['count']=self.object_list.count()
+        data=serializer.data
+        context['data']=data
+        return Response(context)

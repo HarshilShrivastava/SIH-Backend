@@ -54,25 +54,21 @@ class profile(APIView):
                 time=serializer.validated_data['Time']
                 familyincome=int(serializer.validated_data['Familyincome'])
                 residence=serializer.validated_data['Residence']
-                
                 residence=int(residence.id)
                 print(residence)
 #for temporary condition of social media 
                 time=int(time)
-                if time>4:
+                if time>=4:
                     # extreme high
                     obj=SocialMediaTags.objects.get(pk=4)
-                if time<2:
+                if time<=2:
                     #extreme low
                     obj=SocialMediaTags.objects.get(pk=5)
                 if time<4 and time>2:
                         #moderate
                     obj=SocialMediaTags.objects.get(pk=6)
-
-
-
 ## socio economic condition
-                if familyincome <2:
+                if familyincome <=2:
                     if residence=='4' or residence ==4:
                         soectag=SocioeconomicTags.objects.get(pk=3)#T1
 
@@ -98,7 +94,7 @@ class profile(APIView):
                     if residence=='1' or residence ==1:
                         soectag=SocioeconomicTags.objects.get(pk=10)#T8
 
-                if  familyincome >4:
+                if  familyincome >=4:
                     if residence=='4' or residence ==4:
                         soectag=SocioeconomicTags.objects.get(pk=11)#T9
 
@@ -107,11 +103,9 @@ class profile(APIView):
                     
                     if residence=='2' or residence ==2:
                         soectag=SocioeconomicTags.objects.get(pk=13)#T11
-                    
-
+                
                     if residence=='1' or residence ==1:
                         soectag=SocioeconomicTags.objects.get(pk=14)#T12
-                
                 profile=serializer.save(User=self.request.user)
                 profile.SocialMediaTags.add(obj)
                 profile.SocioeconomicTags.add(soectag)
@@ -161,18 +155,18 @@ class profile(APIView):
                 marks1=obj1.TechRating
                 time=obj1.Time
                 mark=max(marks,marks1)
-                if mark>3.5:
-                    if time>4:
+                if mark>=3.5:
+                    if time>=4:
                     # extreme high
                         obj=SocialMediaTags.objects.get(pk=7)
-                    if time<2:
+                    if time<=2:
                         #extreme low
                         obj=SocialMediaTags.objects.get(pk=8)
                     if time<4 and time>2:
                             #moderate
                         obj=SocialMediaTags.objects.get(pk=9)
                 elif mark <3.5 and mark >2.0:
-                    if time>4:
+                    if time>=4:
                     # extreme high
                         obj=SocialMediaTags.objects.get(pk=10)
                     if time<2:
@@ -182,10 +176,10 @@ class profile(APIView):
                             #moderate
                         obj=SocialMediaTags.objects.get(pk=12)        
                 else:
-                    if time>4:
+                    if time>=4:
                     # extreme high
                         obj=SocialMediaTags.objects.get(pk=13)
-                    if time<2:
+                    if time<=2:
                         #extreme low
                         obj=SocialMediaTags.objects.get(pk=14)
                     if time<4 and time>2:
@@ -288,31 +282,31 @@ def put_ratingM(request):
         marks1=obj1.TechRating
         time=obj1.Time
         mark=max(marks,marks1)
-        if mark>3.5:
+        if mark>=3.5:
             print("hello world")
-            if time>4:
+            if time>=4:
             # extreme high
                 obj=SocialMediaTags.objects.get(pk=7)
-            if time<2:
+            if time<=2:
                 #extreme low
                 obj=SocialMediaTags.objects.get(pk=8)
             if time<4 and time>2:
                 obj=SocialMediaTags.objects.get(pk=9)
         elif mark <3.5 and mark >2.0:
-            if time>4:
+            if time>=4:
             # extreme high
                 obj=SocialMediaTags.objects.get(pk=10)
-            if time<2:
+            if time<=2:
                 #extreme low
                 obj=SocialMediaTags.objects.get(pk=11)
             if time<4 and time>2:
                     #moderate
                 obj=SocialMediaTags.objects.get(pk=12)        
         else:
-            if time>4:
+            if time>=4:
             # extreme high
                 obj=SocialMediaTags.objects.get(pk=13)
-            if time<2:
+            if time<=2:
                 #extreme low
                 obj=SocialMediaTags.objects.get(pk=14)
             if time<4 and time>2:
@@ -362,31 +356,31 @@ def put_ratingT(request):
         marks1=obj1.TechRating
         time=obj1.Time
         mark=max(marks,marks1)
-        if mark>3.5:
+        if mark>=3.5:
             print("hello world")
-            if time>4:
+            if time>=4:
             # extreme high
                 obj=SocialMediaTags.objects.get(pk=7)
-            if time<2:
+            if time<=2:
                 #extreme low
                 obj=SocialMediaTags.objects.get(pk=8)
             if time<4 and time>2:
                 obj=SocialMediaTags.objects.get(pk=9)
         elif mark <3.5 and mark >2.0:
-            if time>4:
+            if time>=4:
             # extreme high
                 obj=SocialMediaTags.objects.get(pk=10)
-            if time<2:
+            if time<=2:
                 #extreme low
                 obj=SocialMediaTags.objects.get(pk=11)
             if time<4 and time>2:
                     #moderate
                 obj=SocialMediaTags.objects.get(pk=12)        
         else:
-            if time>4:
+            if time>=4:
             # extreme high
                 obj=SocialMediaTags.objects.get(pk=13)
-            if time<2:
+            if time<=2:
                 #extreme low
                 obj=SocialMediaTags.objects.get(pk=14)
             if time<4 and time>2:
