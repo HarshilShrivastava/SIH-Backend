@@ -5,9 +5,16 @@ from .models import (
     GeneralMark,
     DomainMark,
     SubDomainMark,
-    FulllistMarks
+    FulllistMarks,
+    Certificate
     )
 from rest_framework import serializers
+
+class CertificateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Certificate
+        fields=["Name","File"]
+
 class FulllistMarksSerializer(serializers.ModelSerializer):
     class Meta:
         model=FulllistMarks
@@ -15,13 +22,13 @@ class FulllistMarksSerializer(serializers.ModelSerializer):
 class RecruitReadSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume","MarketRating","TechRating"]
+        fields=["Name","Address","Resume","MarketRating","TechRating","Bio","Experience"]
 
 
 class RecruitSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume",'Socialmedia',"Time","Familyincome","Residence"]
+        fields=["Name","Address","Resume",'Socialmedia',"Time","Familyincome","Residence","Bio","Experience"]
 
         
 class RatingMarketSerializer(serializers.ModelSerializer):

@@ -141,3 +141,15 @@ def Resume(request,id):
         return Response(context)
 
         
+@api_view(['GET',])
+@permission_classes((IsAuthenticated,))
+def delete_profile(request):
+    user = request.user
+    user.is_active = False
+    user.save()
+    context={}
+    data={}
+    context['sucess']=True
+    context['status']=200
+    context['message']="deleted data"
+    return Response(context)

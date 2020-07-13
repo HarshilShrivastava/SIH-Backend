@@ -31,6 +31,9 @@ class Residence(models.Model):
     def __str__(self):
         return self.name
 
+class Skills(models.Model):
+    Name=models.CharField(max_length=200)
+
 class Recruit(models.Model):
     User=models.OneToOneField(User , on_delete=models.CASCADE)
     Name=models.CharField( max_length=50)
@@ -46,11 +49,17 @@ class Recruit(models.Model):
     Residence=models.ForeignKey(Residence,on_delete=models.CASCADE,null=True)
     SocialMediaTags=models.ManyToManyField(SocialMediaTags,blank=True)
     SocioeconomicTags=models.ManyToManyField(SocioeconomicTags,blank=True)
+    Experience=models.FloatField()
+    Bio=models.TextField()
+    Skills=models.ManyToManyField(Skills,blank=True)
 
+
+class Certificate(models.Model):
+    Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE)
+    Name=models.CharField(max_length=255)
+    File=models.FileField( upload_to="certificate/")
 
     
-
-
 class Skill(models.Model):
     fromRecruit=models.OneToOneField(Recruit, on_delete=models.CASCADE)
     Skill1=models.CharField( max_length=50,null=True)

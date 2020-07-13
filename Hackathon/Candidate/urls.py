@@ -9,7 +9,8 @@ from .views import (
     put_generalmarks,
     put_domainmarks,
     put_sub_domainmarks,
-    Fullmarks
+    Fullmarks,
+    CertificateView
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('put-general-marks/',put_generalmarks,name="put general marks"),
     path('put-domain-marks/',put_domainmarks,name="put domain marks"),
     path('put-sub-domain-marks/',put_sub_domainmarks,name="put sub domain marks"),
-    path('Fullmarks/',Fullmarks.as_view(),name="get or post full marks")
+    path('Fullmarks/',Fullmarks.as_view(),name="get or post full marks"),
+    path('Certificate/',CertificateView.as_view(),name="certificate"),
 ]
 

@@ -7,7 +7,8 @@ from Candidate.models import (
     JobenquiryC,
     FulllistMarks,
     SocialMediaTags,
-    SocioeconomicTags
+    SocioeconomicTags,
+    Certificate
 
     )
 from rest_framework import status
@@ -35,7 +36,8 @@ from Candidate.serializers import(
     subDomainMarkSerializer,
     FulllistMarksSerializer,
     DomainMarkSerializer,
-    RecruitReadSerializer
+    RecruitReadSerializer,
+    CertificateSerializer
     )
 from rest_framework.views import APIView
 
@@ -47,7 +49,6 @@ class profile(APIView):
     def post(self, request, *args, **kwargs):
         context={}
         data={}
-
         if request.user.Is_Candidate == 1:
             serializer = RecruitSerializer(data=request.data)
             if serializer.is_valid():
@@ -55,7 +56,6 @@ class profile(APIView):
                 familyincome=int(serializer.validated_data['Familyincome'])
                 residence=serializer.validated_data['Residence']
                 residence=int(residence.id)
-                print(residence)
 #for temporary condition of social media 
                 time=int(time)
                 if time>=4:
@@ -158,34 +158,34 @@ class profile(APIView):
                 if mark>=3.5:
                     if time>=4:
                     # extreme high
-                        obj=SocialMediaTags.objects.get(pk=7)
+                        objx=SocialMediaTags.objects.get(pk=7)
                     if time<=2:
                         #extreme low
-                        obj=SocialMediaTags.objects.get(pk=8)
+                        objx=SocialMediaTags.objects.get(pk=8)
                     if time<4 and time>2:
                             #moderate
-                        obj=SocialMediaTags.objects.get(pk=9)
+                        objx=SocialMediaTags.objects.get(pk=9)
                 elif mark <3.5 and mark >2.0:
                     if time>=4:
                     # extreme high
-                        obj=SocialMediaTags.objects.get(pk=10)
+                        objx=SocialMediaTags.objects.get(pk=10)
                     if time<2:
                         #extreme low
-                        obj=SocialMediaTags.objects.get(pk=11)
+                        objx=SocialMediaTags.objects.get(pk=11)
                     if time<4 and time>2:
                             #moderate
-                        obj=SocialMediaTags.objects.get(pk=12)        
+                        objx=SocialMediaTags.objects.get(pk=12)        
                 else:
                     if time>=4:
                     # extreme high
-                        obj=SocialMediaTags.objects.get(pk=13)
+                        objx=SocialMediaTags.objects.get(pk=13)
                     if time<=2:
                         #extreme low
-                        obj=SocialMediaTags.objects.get(pk=14)
+                        objx=SocialMediaTags.objects.get(pk=14)
                     if time<4 and time>2:
                             #moderate
-                        obj=SocialMediaTags.objects.get(pk=15)
-                obj1.SocialMediaTags.add(obj)     
+                        objx=SocialMediaTags.objects.get(pk=15)
+                obj1.SocialMediaTags.add(objx)     
                 obj1.save()             
 
                 context['sucess']=True
@@ -518,4 +518,53 @@ class Fullmarks(APIView):
             context['count']=qs.count()
             data=serializer.data
             context['data']=data
+            return Response(context)
+
+class CertificateView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+    def post(self, request, *args, **kwargs):
+        context={}
+        data={}
+        if request.user.Is_Candidate == 1:
+            try:
+                obj=get_object_or_404(Recruit,User=request.user)
+            except:
+                context['sucess']=False
+                context['status']=400
+                context['data']=data
+                return Response(context)
+            serializer=CertificateSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(Recruit=obj)
+                context['sucess']=True
+                context['status']=200
+                context['response']="sucessfull post"
+                return Response(context)
+            else:
+                context['sucess']=False
+                context['status']=400
+                context['response']="unsucessfull post"
+                return Response(context)
+
+    def get(self, request, *args, **kwargs):
+        context={}
+        data={}
+
+        if request.user.Is_Candidate == 1:
+            try:
+                obj=get_object_or_404(Recruit,User=request.user)
+            except:
+                context['sucess']=False
+                context['status']=400
+                context['data']=data
+                return Response(context)
+            qs=Certificate.objects.filter(Recruit=obj)
+            serializer=CertificateSerializer(qs,many=True)
+            context['sucess']=True
+            context['status']=200
+            context['response']="sucessfull post"
+            context['count']=qs.count()
+            context['data']=serializer.data
             return Response(context)
