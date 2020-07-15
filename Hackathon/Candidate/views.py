@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.permissions import AllowAny
-
+import requests
 from Candidate.models import (
     Recruit,
     Skill,
@@ -8,7 +8,8 @@ from Candidate.models import (
     FulllistMarks,
     SocialMediaTags,
     SocioeconomicTags,
-    Certificate
+    Certificate,
+    Skills
 
     )
 from rest_framework import status
@@ -109,8 +110,15 @@ class profile(APIView):
                 profile=serializer.save(User=self.request.user)
                 profile.SocialMediaTags.add(obj)
                 profile.SocioeconomicTags.add(soectag)
-                profile.save()
+                url="http://sihml.pythonanywhere.com/analysis/analysis-get/"
+                params = {'username': request.user}
+                response = requests.post(url, data=params)
+                for i in response.json():
+                    obj,c=Skills.objects.get_or_create(Name=i)
+                    profile.Skills.add(obj)
 
+
+                profile.save()
                 context['sucess']=True
                 context['status']=200
                 data=serializer.data

@@ -33,6 +33,8 @@ class Residence(models.Model):
 
 class Skills(models.Model):
     Name=models.CharField(max_length=200)
+    def __str__(self):
+        return self.Name
 
 class Recruit(models.Model):
     User=models.OneToOneField(User , on_delete=models.CASCADE)

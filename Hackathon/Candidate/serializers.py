@@ -6,9 +6,15 @@ from .models import (
     DomainMark,
     SubDomainMark,
     FulllistMarks,
-    Certificate
+    Certificate,
+    Skills
     )
 from rest_framework import serializers
+
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Skills
+        fields=['Name']
 
 class CertificateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,18 +25,22 @@ class FulllistMarksSerializer(serializers.ModelSerializer):
     class Meta:
         model=FulllistMarks
         exclude=['Recruit']
+
 class RecruitReadSerializer(serializers.ModelSerializer):
+    Skills=SkillsSerializer(many=True)
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume","MarketRating","TechRating","Bio","Experience"]
-
+        fields=["Name","Address","Resume","MarketRating","TechRating","Bio","Experience","Skills","Bio",""]
 
 class RecruitSerializer(serializers.ModelSerializer):
+    R2=serializers.SerializerMethodField("get_residence")
     class Meta:
         model=Recruit
         fields=["Name","Address","Resume",'Socialmedia',"Time","Familyincome","Residence","Bio","Experience"]
+    def get_residence(self,info):
+        data= info.Residence.name
+        return data
 
-        
 class RatingMarketSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
@@ -46,13 +56,14 @@ class JobapplySerializer(serializers.ModelSerializer):
         model=JobenquiryC
         fields=['proposal']
 class ApplicationSerializer(serializers.ModelSerializer):
+    
     Recruit_obj=serializers.SerializerMethodField('get_Recruit_name')
     Recruit_add_obj=serializers.SerializerMethodField('get_Recruit_address')
 
     Resume_obj=serializers.SerializerMethodField('get_Recruit_Resume')
     class Meta:
         model=JobenquiryC
-        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','Rating']
+        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','Rating','skills']
     def get_Recruit_name(self,info):
         data=info.Recruit.Name
         return data
