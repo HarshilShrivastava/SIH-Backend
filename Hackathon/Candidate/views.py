@@ -116,8 +116,6 @@ class profile(APIView):
                 for i in response.json():
                     obj,c=Skills.objects.get_or_create(Name=i)
                     profile.Skills.add(obj)
-
-
                 profile.save()
                 context['sucess']=True
                 context['status']=200
@@ -220,7 +218,31 @@ def applyforjob(request,id):
         Profil=get_object_or_404(Recruit,User=request.user )
         serializer=JobapplySerializer(data=request.data)
         if serializer.is_valid():
-            obj=serializer.save(Recruit=Profil,job=obj)
+            text=serializer.validated_data['proposal']
+            total=obj.SkillRequired.values('Name')
+            obtained=Profil.Skills.values('Name')
+            match=0
+            print(total)
+            print(obtained)
+            for i in total:
+                for j in obtained:
+                    if i['Name'] == j['Name']:
+                        match+=1
+                 
+                    
+            total=obj.SkillRequired.values('Name').count()
+            obtained=Profil.Skills.values('Name').count()
+
+            url="http://sihml.pythonanywhere.com/analysis/skills-get/"
+            params = {'Txt': text}
+            response = requests.post(url, data=params)
+            obj=serializer.save(Recruit=Profil,job=obj,similarity=obtained/total)
+            x=JobenquiryC.objects.get(id=obj.id)
+            for i in response.json():
+                obj,c=Skills.objects.get_or_create(Name=i)
+                x.Skills.add(obj)
+            
+            x.save()
             context['status']=200
             context['sucess']=True
             data=serializer.data

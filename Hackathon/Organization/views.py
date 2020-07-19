@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from .models import Company,Jobs
+from .models import Company,Jobs,SkillForJobs
 from rest_framework import filters
 from Candidate.models import(
     JobenquiryC
 )
+import requests
 from rest_framework import status
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -114,9 +115,22 @@ class jobviewset(viewsets.ModelViewSet):
         companyobj=Company.objects.get(User=request.user)
         serializer=jobserializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(by=companyobj)
+            profile=serializer.save(by=companyobj)
+            print(profile)
             context['sucess']=True
             context['response']="sucessfull"
+            text=serializer.validated_data['Job_Descreption']
+            url="http://sihml.pythonanywhere.com/analysis/skills-get/"
+            params = {'Txt': text}
+            response = requests.post(url, data=params)
+            print(response.json())
+            x=Jobs.objects.get(id =profile.id)
+            print(x)
+            for i in response.json():
+                obj,c=SkillForJobs.objects.get_or_create(Name=i)
+                print(obj)
+                x.SkillRequired.add(obj)
+            x.save()
             context['status']=200
             data=serializer.data
             context['data']=data
@@ -226,7 +240,7 @@ def list_of_application(request,id):
     
     obj=get_object_or_404(Jobs,pk=id)
     if request.user == obj.by.User:
-        qs=JobenquiryC.objects.filter(job=obj)
+        qs=JobenquiryC.objects.filter(job=obj).order_by("-similarity")
         context['sucess']=True
         context['status']=200
         context['message']="sucessfull get"

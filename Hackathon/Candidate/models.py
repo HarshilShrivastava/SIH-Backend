@@ -59,7 +59,7 @@ class Recruit(models.Model):
 class Certificate(models.Model):
     Recruit=models.ForeignKey(Recruit,on_delete=models.CASCADE)
     Name=models.CharField(max_length=255)
-    File=models.FileField( upload_to="certificate/")
+    File=models.FileField( upload_to="certificate/",blank=True,null=True)
 
     
 class Skill(models.Model):
@@ -93,6 +93,8 @@ class JobenquiryC(models.Model):
     At=models.DateTimeField( auto_now_add=True)
     proposal=models.TextField()
     job=models.ForeignKey(Jobs,on_delete=models.CASCADE)
+    Skills=models.ManyToManyField(Skills,blank=True)
+    similarity=models.FloatField()
 
 
 class FulllistMarks(models.Model):

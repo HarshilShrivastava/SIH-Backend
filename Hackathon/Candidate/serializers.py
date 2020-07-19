@@ -27,20 +27,22 @@ class FulllistMarksSerializer(serializers.ModelSerializer):
         exclude=['Recruit']
 
 class RecruitReadSerializer(serializers.ModelSerializer):
+    R2=serializers.SerializerMethodField("get_residence")
     Skills=SkillsSerializer(many=True)
     class Meta:
         model=Recruit
-        fields=["Name","Address","Resume","MarketRating","TechRating","Bio","Experience","Skills","Bio",""]
-
-class RecruitSerializer(serializers.ModelSerializer):
-    R2=serializers.SerializerMethodField("get_residence")
-    class Meta:
-        model=Recruit
-        fields=["Name","Address","Resume",'Socialmedia',"Time","Familyincome","Residence","Bio","Experience"]
+        fields=["Name","Address","Resume","MarketRating","TechRating","Bio","Experience","Skills","Bio","R2","Familyincome","Time"]
     def get_residence(self,info):
+
         data= info.Residence.name
         return data
 
+class RecruitSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model=Recruit
+        fields=["Name","Address","Resume",'Socialmedia',"Time","Familyincome","Residence","Bio","Experience"]
+   
 class RatingMarketSerializer(serializers.ModelSerializer):
     class Meta:
         model=Recruit
@@ -55,15 +57,14 @@ class JobapplySerializer(serializers.ModelSerializer):
     class Meta:
         model=JobenquiryC
         fields=['proposal']
-class ApplicationSerializer(serializers.ModelSerializer):
-    
+class ApplicationSerializer(serializers.ModelSerializer):  
     Recruit_obj=serializers.SerializerMethodField('get_Recruit_name')
     Recruit_add_obj=serializers.SerializerMethodField('get_Recruit_address')
 
     Resume_obj=serializers.SerializerMethodField('get_Recruit_Resume')
     class Meta:
         model=JobenquiryC
-        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','Rating','skills']
+        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','similarity']
     def get_Recruit_name(self,info):
         data=info.Recruit.Name
         return data
