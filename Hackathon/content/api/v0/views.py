@@ -33,11 +33,8 @@ def RecommendedCourses(request):
     qs=Courses.objects.none().distinct()
     smt=obj.SocioeconomicTags.all()
     for i in smt:
-        qs=Courses.objects.filter(SocioeconomicTags=i)
+        qs=qs | Courses.objects.filter(SocioeconomicTags=i.id)
     
-
-    #lis=Courses.objects.all().None()
-
     context={}
     data={}
     serializer=CourseSerializers(qs,many=True)
@@ -52,13 +49,18 @@ def RecommendedCourses(request):
 @permission_classes((IsAuthenticated, ))
 def RecommendedBlogs(request):
     obj=get_object_or_404(Recruit,User=request.user)
+    print(obj)
     qs=Blogs.objects.none().distinct()
     smt=obj.SocialMediaTags.all()
+    print(smt)
     for i in smt:
-        qs=Blogs.objects.filter(SocialMediaTags=i)
+        print(i.id)
+        qs=qs | Blogs.objects.filter(SocialMediaTags=i)
+        print(qs)
 
     context={}
     data={}
+    print
     serializer=BlogsSerializers(qs,many=True)
     context={}
     data={}
@@ -76,7 +78,7 @@ def RecommendedScheme(request):
     qs=Scheme.objects.none().distinct()
     smt=obj.SocioeconomicTags.all()
     for i in smt:
-        qs=Scheme.objects.filter(SocioeconomicTags=i)
+        qs=qs | Scheme.objects.filter(SocioeconomicTags=i)
     context={}
     data={}
     serializer=SchemeSerializers(qs,many=True)

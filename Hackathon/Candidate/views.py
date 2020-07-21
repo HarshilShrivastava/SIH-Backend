@@ -160,40 +160,31 @@ class profile(APIView):
                 marks=obj1.MarketRating
                 marks1=obj1.TechRating
                 time=obj1.Time
-                mark=max(marks,marks1)
-                if mark>=3.5:
-                    if time>=4:
+                time=int(time)
+                if time>=4:
                     # extreme high
-                        objx=SocialMediaTags.objects.get(pk=7)
-                    if time<=2:
-                        #extreme low
-                        objx=SocialMediaTags.objects.get(pk=8)
-                    if time<4 and time>2:
-                            #moderate
-                        objx=SocialMediaTags.objects.get(pk=9)
-                elif mark <3.5 and mark >2.0:
-                    if time>=4:
-                    # extreme high
-                        objx=SocialMediaTags.objects.get(pk=10)
-                    if time<2:
-                        #extreme low
-                        objx=SocialMediaTags.objects.get(pk=11)
-                    if time<4 and time>2:
-                            #moderate
-                        objx=SocialMediaTags.objects.get(pk=12)        
-                else:
-                    if time>=4:
-                    # extreme high
-                        objx=SocialMediaTags.objects.get(pk=13)
-                    if time<=2:
-                        #extreme low
-                        objx=SocialMediaTags.objects.get(pk=14)
-                    if time<4 and time>2:
-                            #moderate
-                        objx=SocialMediaTags.objects.get(pk=15)
-                obj1.SocialMediaTags.add(objx)     
+                    objx=SocialMediaTags.objects.get(pk=4)
+                if time<=2:
+                    #extreme low
+                    objx=SocialMediaTags.objects.get(pk=5)
+                if time<4 and time>2:
+                        #moderate
+                    objx=SocialMediaTags.objects.get(pk=6)  
+                obj1.SocialMediaTags.add(objx)
+                my_skills=obj1.Skills.through.objects.all()
+                for i in my_skills:
+                    b=get_object_or_404(Skills,id=i.skills.id)
+                    obj1.Skills.remove(b)    
+                url="http://sihml.pythonanywhere.com/analysis/analysis-get/"
+                params = {'username': request.user}
+                response = requests.post(url, data=params)
+                print(response.json())
+                print(request.user)
+                for i in response.json():
+                    obj,c=Skills.objects.get_or_create(Name=i)
+                    print(obj)
+                    obj1.Skills.add(obj)
                 obj1.save()             
-
                 context['sucess']=True
                 context['status']=200
                 data=serializer.data
