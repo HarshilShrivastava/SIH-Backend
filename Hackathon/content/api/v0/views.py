@@ -31,10 +31,10 @@ from rest_framework import generics
 def RecommendedCourses(request):
     obj=get_object_or_404(Recruit,User=request.user)
     qs=Courses.objects.none().distinct()
-    smt=obj.SocioeconomicTags.all()
+    smt=obj.SocialMediaTags.all()
+    #socialmedia
     for i in smt:
-        qs=qs | Courses.objects.filter(SocioeconomicTags=i.id)
-    
+        qs=qs | Courses.objects.filter(SocialMediaTags=i.id)
     context={}
     data={}
     serializer=CourseSerializers(qs,many=True)
@@ -43,7 +43,7 @@ def RecommendedCourses(request):
     context['message']="sucessfull get"
     context['count']=qs.count()
     context['data']=data
-    return Response(context)
+    return Response({'Course_list': context})
 
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated, ))
@@ -52,12 +52,16 @@ def RecommendedBlogs(request):
     print(obj)
     qs=Blogs.objects.none().distinct()
     smt=obj.SocialMediaTags.all()
+    smtb=obj.SocioeconomicTags.all()
     print(smt)
+    print(smtb)
+    
     for i in smt:
         print(i.id)
         qs=qs | Blogs.objects.filter(SocialMediaTags=i)
-        print(qs)
-
+     
+    for i in smtb:
+        qs=qs | Blogs.objects.filter(SocioeconomicTags=i)
     context={}
     data={}
     print
@@ -69,7 +73,7 @@ def RecommendedBlogs(request):
     context['message']="sucessfull get"
     context['count']=qs.count()
     context['data']=data
-    return Response(context)
+    return Response({'Blogs_list': context})
 
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated, ))
@@ -79,6 +83,7 @@ def RecommendedScheme(request):
     smt=obj.SocioeconomicTags.all()
     for i in smt:
         qs=qs | Scheme.objects.filter(SocioeconomicTags=i)
+    #donot change
     context={}
     data={}
     serializer=SchemeSerializers(qs,many=True)
@@ -88,7 +93,7 @@ def RecommendedScheme(request):
     context['message']="sucessfull get"
     context['count']=qs.count()
     context['data']=data
-    return Response(context)
+    return Response({'Scheme_list': context})
 
 
 

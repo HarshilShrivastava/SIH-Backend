@@ -7,8 +7,10 @@ class companyserializer(serializers.ModelSerializer):
 class jobserializer(serializers.ModelSerializer):
     class Meta:
         model=Jobs
-        fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id']
-        
+        fields=['job_title','Job_Descreption','fields','Level','Minimum_experience','prefered_city','id','SubDomain']
+        read_only_fields = ('id',)
+
+
 class ResultSerializer(serializers.Serializer):
     first = serializers.IntegerField()
     Second = serializers.IntegerField()

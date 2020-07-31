@@ -17,7 +17,7 @@ class Company(models.Model):
     City=models.CharField(max_length=50)
     State=models.CharField(max_length=50)
     Registration_no=models.CharField(max_length=50)
-    website=models.URLField( max_length=200)
+    website=models.CharField( max_length=200)
 
 
 class Jobs(models.Model):
@@ -29,8 +29,8 @@ class Jobs(models.Model):
     Level=models.IntegerField()
     Minimum_experience=models.IntegerField()
     prefered_city=models.CharField( max_length=50)
-    SubDomain=models.ManyToManyField(SubDomain)
+    SubDomain=models.ForeignKey(SubDomain, on_delete=models.CASCADE)
     SkillRequired=models.ManyToManyField(SkillForJobs,blank=True)
     def __str__(self):
         return str(self.id)
-    
+

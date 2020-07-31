@@ -109,6 +109,7 @@ def ObtainAuthTokenView(request):
                 context['status']=200
                 context['token'] = token.key
                 context['id']=account.id
+                context['username']=account.username
                 context['Is_Organization']=account.Is_Organization
                 context['Is_Candidate']=account.Is_Candidate
                 context['Is_University']=account.Is_University
@@ -116,7 +117,7 @@ def ObtainAuthTokenView(request):
                 context['status']: 440
                 context['response'] = 'Error'
                 context['error_message'] = 'Invalid credentials'
-            
+
         return Response(context)
 
 
@@ -140,7 +141,7 @@ def Resume(request,id):
         context['message']="Not Found "
         return Response(context)
 
-        
+
 @api_view(['GET',])
 @permission_classes((IsAuthenticated,))
 def delete_profile(request):

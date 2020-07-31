@@ -10,6 +10,14 @@ from .models import (
     Skills
     )
 from rest_framework import serializers
+import json
+from Organization.models import SkillForJobs
+
+class skillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=SkillForJobs
+        fields=['Name']
+
 
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,11 +68,27 @@ class JobapplySerializer(serializers.ModelSerializer):
 class ApplicationSerializer(serializers.ModelSerializer):  
     Recruit_obj=serializers.SerializerMethodField('get_Recruit_name')
     Recruit_add_obj=serializers.SerializerMethodField('get_Recruit_address')
-
     Resume_obj=serializers.SerializerMethodField('get_Recruit_Resume')
+    get_candidate_skills=serializers.SerializerMethodField('get_can_skill')
+    get_job_skills=serializers.SerializerMethodField('get_job_skill')
+
     class Meta:
         model=JobenquiryC
-        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','similarity']
+        fields=['proposal','At','Recruit_obj','Resume_obj','Recruit_add_obj','similarity','get_candidate_skills','get_job_skills']
+    def get_can_skill(self,info):
+        context={}
+        data=info.Recruit.Skills.all()
+        qs=skillSerializer(data,many=True)
+        context=qs.data
+        return context
+    def get_job_skill(self,info):
+        context={}
+        print(info.Skills.all())
+        data=info.job.SkillRequired.all()
+        qs=skillSerializer(data,many=True)
+        context=qs.data
+        return context
+
     def get_Recruit_name(self,info):
         data=info.Recruit.Name
         return data

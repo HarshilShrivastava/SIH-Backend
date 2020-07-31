@@ -54,7 +54,7 @@ class Companyprofile(APIView):
                 data=serializer.errors
                 context['data']=data
                 return Response(context)
-                
+
         else:
             return Response( status=status.HTTP_400_BAD_REQUEST)
 
@@ -70,7 +70,7 @@ class Companyprofile(APIView):
                 context['message']="profile not created"
                 context['data']=data
                 return Response(context)
-            
+
             serializer = companyserializer(obj)
             context['sucess']=True
             context['status']=200
@@ -78,7 +78,7 @@ class Companyprofile(APIView):
             data=serializer.data
             context['data']=data
             return Response(context)
-            
+
     def put(self, request, *args, **kwargs):
         if request.user.Is_Candidate == 1:
             obj=get_object_or_404(Company,User=request.user)
@@ -100,7 +100,7 @@ class Companyprofile(APIView):
             context['data']=data
             return Response(context)
 
- 
+
 class jobviewset(viewsets.ModelViewSet):
     serializer_class = jobserializer
     queryset=Jobs.objects.all()
@@ -113,7 +113,7 @@ class jobviewset(viewsets.ModelViewSet):
         data={}
         user=self.request.user
         companyobj=Company.objects.get(User=request.user)
-        serializer=jobserializer(data=request.data)
+        serializer=jobserializer(data=request.data, context={'request':request})
         if serializer.is_valid():
             profile=serializer.save(by=companyobj)
             print(profile)
@@ -169,7 +169,7 @@ class jobviewset(viewsets.ModelViewSet):
 
 
 @api_view(['POST', ])
-@permission_classes((AllowAny, ))   
+@permission_classes((AllowAny, ))
 def Recommendedjobs(request):
     if request.method=='POST':
         serializer=ResultSerializer(data=request.data)
@@ -227,7 +227,7 @@ class AllJobViews(generics.ListCreateAPIView):
         return Response(context)
 
 @api_view(['GET', ])
-@permission_classes((IsAuthenticated, ))    
+@permission_classes((IsAuthenticated, ))
 def list_of_application(request,id):
     context={}
     data={}
@@ -237,7 +237,7 @@ def list_of_application(request,id):
         context['message']="unsucessfull get"
         context['data']=data
         return Response(context)
-    
+
     obj=get_object_or_404(Jobs,pk=id)
     if request.user == obj.by.User:
         qs=JobenquiryC.objects.filter(job=obj).order_by("-similarity")
