@@ -18,10 +18,11 @@ from django.urls import path, include
 
 from django.conf import settings
 from django.conf.urls.static import static
-from customquiz.api.v0.views import import_question,import_answer
+from customquiz.api.v0.views import import_question,import_answer,QuestiontListViewset
 
-
-
+from rest_framework import routers
+router = routers.DefaultRouter()
+router.register("get-question",QuestiontListViewset)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("quiz.api.urls")),
@@ -31,5 +32,6 @@ urlpatterns = [
     #path('customquiz/',include("customquiz.api.v0.urls")),
     path("content/",include("content.api.v0.urls")),
     path('customquestion/',import_question,name="questions"),
-    path('customanswer/',import_answer,name="answers")
+    path('customanswer/',import_answer,name="answers"),
+    path("api/", include(router.urls)),
  ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

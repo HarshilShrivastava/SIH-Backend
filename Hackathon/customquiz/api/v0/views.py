@@ -1,6 +1,5 @@
 from customquiz.models import(
      Answer,
-     
      Question,
      SubDomain,
      )
@@ -8,9 +7,13 @@ import csv
 import urllib
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import AllowAny
+
 from customquiz.api.v0.serializers import (
      questionSerializer,
-     AnswerSerializer
+     AnswerSerializer,
+     AnswerqSerializer,
+     QuestionqSerializer
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
@@ -18,7 +21,7 @@ from rest_framework.response import Response
 from Organization.models import(
      Company
 )
-
+from rest_framework import viewsets
 
 @api_view(['POST',])
 @permission_classes((IsAuthenticated,))
@@ -34,7 +37,7 @@ def import_question(request):
                context['status']=200
                context['message']="sucessfull"
                return Response(context)
-          return Response("Hellosb")
+          return Response(serializer.errors)
      return Response("Hellob")
 
 
@@ -59,3 +62,13 @@ def import_answer(request):
      return Response("Hellob")
 
 
+class QuestiontListViewset(viewsets.ReadOnlyModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionqSerializer
+    http_method_names = ['get']
+    permission_classes = (AllowAny,)
+
+    def list(self, request, *args, **kwargs):
+        self.object_list = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(self.object_list, many=True)
+        return Response({'Question_list': serializer.data})

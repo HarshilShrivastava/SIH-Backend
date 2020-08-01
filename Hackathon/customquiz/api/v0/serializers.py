@@ -13,3 +13,16 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model=Answer
         fields=['Answer_text','Weightage','Question_related_to']
+
+class AnswerqSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Answer
+        fields='__all__'
+
+class QuestionqSerializer(serializers.ModelSerializer):
+    Question=AnswerqSerializer(
+        read_only = True,many=True
+    )
+    class Meta:
+        model=Question
+        fields='__all__'
