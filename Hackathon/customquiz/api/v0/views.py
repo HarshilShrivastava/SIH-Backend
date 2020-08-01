@@ -3,6 +3,9 @@ from customquiz.models import(
      Question,
      SubDomain,
      )
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 import csv
 import urllib
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -66,9 +69,18 @@ class QuestiontListViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionqSerializer
     http_method_names = ['get']
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
-        self.object_list = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(self.object_list, many=True)
-        return Response({'Question_list': serializer.data})
+     #     if request.user.Is_Candidate==0:
+     #          return Response("not authorised")
+              
+          
+          userobj=get_object_or_404(User,username=self.request.query_params.get('username', None))
+          obj=get_object_or_404(Company,User=userobj)
+          queryset = Question.objects.filter(Organization=obj)
+          serializer=QuestionqSerializer(queryset,many=True)
+
+
+          print(obj)
+          return Response({'Question_list': serializer.data})

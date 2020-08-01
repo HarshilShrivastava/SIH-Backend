@@ -227,7 +227,7 @@ def applyforjob(request,id):
             url="http://sihml.pythonanywhere.com/analysis/skills-get/"
             params = {'Txt': text}
             response = requests.post(url, data=params)
-            obj=serializer.save(Recruit=Profil,job=obj,similarity=obtained/total)
+            obj=serializer.save(Recruit=Profil,job=obj,similarity=match/total)
             x=JobenquiryC.objects.get(id=obj.id)
             for i in response.json():
                 obj,c=Skills.objects.get_or_create(Name=i)
