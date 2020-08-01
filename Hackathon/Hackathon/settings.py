@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'image',
     'User',
     "Organization",
+    "customquiz",
     'University',
 ]
 

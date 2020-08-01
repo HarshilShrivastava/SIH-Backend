@@ -178,7 +178,10 @@ def Recommendedjobs(request):
             Second=serializer.data['Second']
             third=serializer.data['third']
             fourth=serializer.data['fourth']
-            jobsqs=Jobs.objects.filter(SubDomain=first).filter(SubDomain=Second).filter(SubDomain=third).filter(SubDomain=fourth)
+            final=Jobs.objects.none().distinct()
+            print(first , Second , third , fourth,   )
+            jobsqs=Jobs.objects.all()
+            print(jobsqs)
             jobsqscount=jobsqs.count()
             first_ratio=0.4*jobsqscount
             Second_ratio=0.3*jobsqscount

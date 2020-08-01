@@ -12,7 +12,7 @@ class SkillForJobs(models.Model):
 class Company(models.Model):
     User=models.OneToOneField(User, on_delete=models.CASCADE)
     Name=models.CharField(max_length=50)
-    Address=models.CharField(max_length=50)
+    Address=models.TextField(max_length=50)
     Email=models.EmailField(max_length=254)
     City=models.CharField(max_length=50)
     State=models.CharField(max_length=50)

@@ -10,7 +10,10 @@ from Organization.models import (
 )
 User = get_user_model()
 
-
+class JobStatus(models.Model):
+    Name=models.CharField(max_length=200,primary_key=True,unique=True)
+    def __str__(self):
+        return self.Name
 class SocialMedia(models.Model):
     name=models.CharField( max_length=50,null=True)
     def __str__(self):
@@ -94,6 +97,7 @@ class JobenquiryC(models.Model):
     proposal=models.TextField()
     job=models.ForeignKey(Jobs,on_delete=models.CASCADE)
     Skills=models.ManyToManyField(Skills,blank=True)
+    
     similarity=models.FloatField()
 
 
@@ -105,3 +109,6 @@ class FulllistMarks(models.Model):
     RoundThree1 = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
     RoundThree2 = models.FloatField(validators=[MinValueValidator(0.9), MaxValueValidator(10)],blank=True,null=True,default=0)
     TimeStamp=models.DateTimeField(auto_now_add=True)
+
+
+
